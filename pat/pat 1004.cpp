@@ -17,11 +17,7 @@ int dfs(int fa,int h){
     int max_h=0;
     rep(i,0,t){
         int child=node[fa][i];
-       // cout<<child<<endl;
-        //if(vis[child]) continue;
-        //vis[child]=1;
         max_h=max(max_h,dfs(child,h+1));
-       // vis[child]=0;
     }
     return max_h;
 }
