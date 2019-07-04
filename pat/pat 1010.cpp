@@ -6,7 +6,7 @@
 using namespace std;
 const int N=1005;
 typedef long long ll;
-ll cal(char s[],ll radix){
+ll cal(char s[],int radix){
     int len=strlen(s);
     ll dight=1;
     ll ans=0;
@@ -18,12 +18,12 @@ ll cal(char s[],ll radix){
   }
   return ans;
 }
-ll get(char s[],char str[],ll radix){
+ll get(char s[],char str[],int radix){
   ll r=cal(s,radix)+1,l=0;
   ll v1=r-1;
   int len=strlen(str);
   rep(i,0,len){
-       if(str[i]>='0' && s[i]<='9') l=max((str[i]-'0')*1ll,l);
+       if(str[i]>='0' && str[i]<='9') l=max((str[i]-'0')*1ll,l);
         else l=max((str[i]-'a'+10)*1ll,l);
   }
   l+=1;
@@ -38,13 +38,13 @@ ll get(char s[],char str[],ll radix){
 }
 int main(){
     char s1[N],s2[N];
-    int tag;ll radix;
-    while(scanf("%s %s %d %lld",s1,s2,&tag,&radix)!=EOF){
+    int tag,radix;
+    while(scanf("%s %s %d %d",s1,s2,&tag,&radix)!=EOF){
          ll ans;
          if(tag==1) ans=get(s1,s2,radix);
          else ans=get(s2,s1,radix);
-         if(ans==-1) printf("Impossible");
-         else printf("%lld",ans);
+         if(ans==-1) puts("Impossible");
+         else printf("%lld\n",ans);
     }
 return 0;
 }
