@@ -17,7 +17,7 @@ void add_edge(int u,int v){
   head[u]=tot++;
 }
 int dfs(int u){
-if(vis[u]) return 0;
+   if(vis[u]) return 0;
      vis[u]=1;
     int ans=0;
    for(int i=head[u];i!=-1;i=edge[i].next){
@@ -36,6 +36,7 @@ int main(){
         rep(i,0,m){
           scanf("%d %d",&u,&v);
           add_edge(u,v);
+          add_edge(v,u);
         }
         rep(i,0,k){
            scanf("%d",&u);
