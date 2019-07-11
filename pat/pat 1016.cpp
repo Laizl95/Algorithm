@@ -70,7 +70,7 @@ int main(){
          printf(" %d ",get_time(cons[i][j])-get_time(cons[i][j-1]));
          double m=cal(cons[i][j])-cal(cons[i][j-1]);
          ans+=m;
-         printf("$%.3lf\n",m);
+         printf("$%.2lf\n",m);
      }
      printf("Total amount: $%.2lf\n",ans);
   }
