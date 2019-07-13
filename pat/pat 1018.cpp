@@ -33,14 +33,11 @@ void dfs(int u,int zd){
   dfs(pre[u],zd);
 }
 void dijkstra(int sd,int zd,int c_max,int n){
-   rep(i,0,n+1) pre[i]=-1,dis[i]=INT_MAX-1;
-   dis[sd]=0;ms(vis,0);
+   rep(i,0,n+1) pre[i]=-1,dis[i]=INT_MAX-1,vis[i]=0;
+   dis[sd]=0;num[zd]=c_max;
+   bikes[sd]=max(0,c_max-num[sd]);
+   return_bikes[sd]=max(num[sd]-c_max,0);
    priority_queue<node> q;
-   rep(i,0,n+1) bikes[i]=INT_MAX-1,return_bikes[i]=INT_MAX-1;
-   int x=c_max-num[sd];
-   if(x>0) bikes[sd]=x,return_bikes[sd]=0;
-   else return_bikes[sd]=-x,bikes[sd]=0;
-   num[zd]=c_max;
    q.push(node(sd,0,bikes[sd],return_bikes[sd]));
    while(!q.empty()){
        node now=q.top();
@@ -56,9 +53,9 @@ void dijkstra(int sd,int zd,int c_max,int n){
              if(send_b>0)
                 bikes[v]=bikes[u]+send_b,return_bikes[v]=return_bikes[u];
              else{
-                 int c=bikes[u]-return_b;
-                 if(c>0) bikes[v]=c,return_bikes[v]=return_bikes[u];
-                 else bikes[v]=0,return_bikes[v]=-c+return_bikes[u];
+                int c=bikes[u]-return_b;
+                bikes[v]=max(0,c);
+                return_bikes[v]=max(return_bikes[u],return_bikes[u]-c);
              }
              pre[v]=u;
              q.push(node(v,dis[v],bikes[v],return_bikes[v]));
@@ -79,32 +76,18 @@ void dijkstra(int sd,int zd,int c_max,int n){
             }
             else{
                     int c=bikes[u]-return_b;
-            if(c>0){
-                    if(bikes[v]>c){
-                        bikes[v]=c;
-                        return_bikes[v]=return_bikes[u];
+                    if(bikes[v]>max(c,0)){
+                        bikes[v]=max(c,0);
+                        return_bikes[v]=max(return_bikes[u],-c+return_bikes[u]);
                         pre[v]=u;
                         q.push(node(v,dis[v],bikes[v],return_bikes[v]));
                     }
-                    else if(bikes[v]==c && return_bikes[v]>return_bikes[u]){
-                        return_bikes[v]=return_bikes[u];
+                    else if(bikes[v]==max(c,0) && return_bikes[v]>max(return_bikes[u],-c+return_bikes[u])){
+                        return_bikes[v]=max(return_bikes[u],-c+return_bikes[u]);
                         pre[v]=u;
                         q.push(node(v,dis[v],bikes[v],return_bikes[v]));
                     }
-            }
-            else{
-                if(bikes[v]>0){
-                    bikes[v]=0;
-                    return_bikes[v]=-c+return_bikes[u];
-                    pre[v]=u;
-                    q.push(node(v,dis[v],bikes[v],return_bikes[v]));
-                }else if(bikes[v]==0 && return_bikes[v]>-c+return_bikes[u]){
-                    return_bikes[v]=-c+return_bikes[u];
-                    pre[v]=u;
-                    q.push(node(v,dis[v],bikes[v],return_bikes[v]));
                 }
-            }
-           }
 
           }
        }
