@@ -5,6 +5,7 @@
 #define pb(x) push_back(x)
 using namespace std;
 const int N=505;
+//按照距离排序,选择比当前位置价格低的位置即为最优
 int d,per_d,n;
 int v_max;
 struct node{
