@@ -8,9 +8,10 @@ const int N=10005;
 int a[N],b[205];
 int dp[N];//长度为i+1的不降子序列最后一位的大小
 int b_search(int num,int l,int r){
+
     while(l<=r){
-        int mid=l+r>>1;
-        if(num<a[mid]) r-=1;
+        int mid=(l+r)>>1;
+        if(num<dp[mid]) r-=1;
         else l+=1;
     }
     return l;
@@ -32,10 +33,10 @@ int main(){
     dp[0]=a[0];int r=0;
     rep(i,1,p){
         int pos=b_search(a[i],0,r);
+        if(pos<=r) dp[pos]=a[i];
+        else r=pos,dp[pos]=a[i];
         //rep(j,0,r+1) printf("%d ",dp[j]);puts("");
         //printf("pos:%d\n",pos);
-        if(pos<=r) dp[pos]=a[i];
-        else r+=1,dp[pos]=a[i];
     }
     printf("%d\n",r+1);
   }
