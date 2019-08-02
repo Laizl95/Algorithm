@@ -13,34 +13,30 @@ struct node{
 }s[N];
 int tot;
 int build(int num,int l,int r,int ok){
-
         if(l>r){
             int id=tot;++tot;
             s[id]=node(-1,-1,num);
             return id;
         }
-        int l1=-1,r1=-1,l2=-1,r2=-1;
+        int l1=0,r1=-1,l2=0,r2=-1;
         rep(i,l,r+1)
             if(ok && a[i]>=num){l1=l;r1=i-1;l2=i;r2=r;break;}
             else if(!ok && a[i]<num) {l1=l;r1=i-1;l2=i;r2=r;break;}
+        if(r2==-1) l1=l,r1=r;
+         //cout<<l1<<" "<<r1<<" "<<l2<<" "<<r2<<" "<<num<<endl;
+        rep(i,l1,r1+1) if((ok&&a[i]>=num)||(!ok&&a[i]<num)) return -2;
+        rep(i,l2,r2+1) if((ok&&a[i]<num)||(!ok&&a[i]>=num)) return -2;
         int id=tot; ++tot;
-        //cout<<l1<<" "<<r1<<" "<<l2<<" "<<r2<<" "<<num<<endl;
         s[id]=node(-1,-1,num);
         if(l1<=r1)
             s[id].l=build(a[l1],l1+1,r1,ok);
+            if(s[id].l==-2) return -2;
         if(l2<=r2)
             s[id].r=build(a[l2],l2+1,r2,ok);
+         if(s[id].r==-2) return -2;
         return id;
 }
-int judge(int root){
-    if(root==-1) return 0;
-    int v=s[root].x;
-    int v_l=judge(s[root].l),v_r=judge(s[root].r);
-    if(v_l==-1 || v_r==-1) return -1;
-    if(v_l>=v) return -1;
-    if(v_r!=0 && v_r<v) return -1;
-    return max(v_r,v);
-}
+
 void solve(int root,int p){
     if(root==-1) return;
     solve(s[root].l,p);
@@ -55,12 +51,12 @@ int main(){
         tot=0;
         rep(i,0,n) scanf("%d",&a[i]);
         if(n==1){puts("YES");printf("%d\n",a[0]);continue;}
-        build(a[0],1,n-1,1);
-        if(judge(0)!=-1){
+        int f=build(a[0],1,n-1,1);
+        if(f!=-2){
             puts("YES");solve(0,0);puts("");continue;
-        }
-        build(a[0],1,n-1,0);
-        if(judge(0)!=-1){
+        }tot=0;
+        f=build(a[0],1,n-1,0);
+        if(f!=-2){
             puts("YES");solve(0,0);puts("");continue;
         }
         puts("NO");
