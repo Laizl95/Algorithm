@@ -10,7 +10,7 @@ int dp[N];//长度为i+1的不降子序列最后一位的大小
 int b_search(int num,int l,int r){
 
     while(l<=r){
-        int mid=(l+r)>>1;
+        int mid=l+r>>1;
         if(num<dp[mid]) r-=1;
         else l+=1;
     }
@@ -35,8 +35,6 @@ int main(){
         int pos=b_search(a[i],0,r);
         if(pos<=r) dp[pos]=a[i];
         else r=pos,dp[pos]=a[i];
-        //rep(j,0,r+1) printf("%d ",dp[j]);puts("");
-        //printf("pos:%d\n",pos);
     }
     printf("%d\n",r+1);
   }
