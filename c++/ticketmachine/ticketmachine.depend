@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1567323344 source:c:\users\zhilong\desktop\code\c++\ticketmachine\main.cpp
+	<iostream>
+	<TicketMachine.h>
+	<A_.h>
+
+1567323444 c:\users\zhilong\desktop\code\c++\ticketmachine\include\ticketmachine.h
+
+1567323444 source:c:\users\zhilong\desktop\code\c++\ticketmachine\src\ticketmachine.cpp
+	"TicketMachine.h"
+	<iostream>
+
+1567323344 source:c:\users\zhilong\desktop\code\c++\ticketmachine\src\a_.cpp
+	"A_.h"
+	<iostream>
+
+1567323197 c:\users\zhilong\desktop\code\c++\ticketmachine\include\a_.h
+
