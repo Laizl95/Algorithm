@@ -15,7 +15,7 @@ class point{
 };
 point::point(){
 
-    //printf("point--this=%p\n",this);
+    printf("point--this=%p\n",this);
 }
 point::point(int _x,int _y){
     x=_x;y=_y;
