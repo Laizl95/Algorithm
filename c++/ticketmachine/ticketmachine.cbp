@@ -34,10 +34,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="include/A_.h" />
 		<Unit filename="include/TicketMachine.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="src/A_.cpp" />
 		<Unit filename="src/TicketMachine.cpp" />
 		<Extensions>
 			<code_completion />
