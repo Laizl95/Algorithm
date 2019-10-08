@@ -7,71 +7,61 @@ using namespace std;
 const int N=2*1e5+5;
 typedef long long LL;
 int a[N],sum[N],b[N];
-int solve(int l,int r,int x,int v[]){
-
-        while(l<=r){
-            int mid=l+r>>1;
-            if(v[mid]<x) l+=1;
-            else if(v[mid]==x) return mid;
-            else r-=1;
-        }
-        return l;
-}
-int get(int x){
-    int ans=0;
-    while(x){
-        x/=10;
-        ans+=1;
+LL cal1(LL x){
+        LL ans=0;
+    for(LL i=1,l=1;;i++,l*=10){
+        LL r=l*10-1;if(r>x) r=x;
+        LL n=x-l+1,m=max(x-r+1,1LL);
+        ans+=i*(n+m)*(n-m+1)/2;
+        if(r==x) break;
     }
     return ans;
 }
-LL sum1(LL l,LL r)
-{
-    l--;
-    return r*(r+1)/2-l*(l+1)/2;
-}
-LL calc(LL x)
-{
-    if (!x)return 0;
-    LL sum=0;
-    for (int i=1,j=1;;i++,j*=10)
-    {
-        LL l=j,r=j*10-1;if (r>x)r=x;
-        sum+=i*((x+1)*(r-l+1)-sum1(l,r));
-        if (r==x)break;
+LL cal2(LL x){
+        LL ans=0;
+    for(LL i=1,l=1;;i++,l*=10){
+        LL r=l*10-1;if(r>x) r=x;
+        LL n=x-l+1,m=max(x-r+1,1LL);
+        ans+=i*(n-m+1);
+        if(r==x) break;
     }
-    return sum;
+    return ans;
 }
+LL solve(int l,int r,LL x){
+        while(l<=r){
+            int mid=(l+r)/2;
+            if(cal1(mid*1LL)<x) l=mid+1;
+            else r=mid-1;
+        }
+        return l;
+}
+LL solve2(int l,int r,LL x){
 
+        while(l<=r){
+            int mid=l+r>>1;
+            if(cal2(mid*1LL)<x) l=mid+1;
+            else r=mid-1;
+        }
+        return l;
+}
 int main(){
-    printf("%d\n",calc(9));
-    int t,p=1;
-    while(1){
-        a[p]=get(p)+a[p-1];
-        sum[p]=sum[p-1]+a[p];
-        if(sum[p]>1e9) break;
-        p+=1;
-    }
-   // printf("%d\n",p);
-    rep(i,1,40) printf("%d ",sum[i]);puts("");
-    //rep(i,1,40) printf("%d ",a[i]);
+    int t,p=1e9+1;
     scanf("%d",&t);
     while(t--){
-        int x;
-        scanf("%d",&x);
-         int l=solve(1,p-1,x,sum);//在第几组里面
+         LL x;
+         scanf("%lld",&x);
+         LL l=solve(1,p-1,x);//在第几组里面
          //printf("%d ",x-sum[l-1]);
-         int r=solve(1,p-1,x-sum[l-1],a);//在该组哪个数字
+         LL r=solve2(1,p-1,x-cal1(l-1));//在该组哪个数字
          //printf("%d\n",x-sum[l-1]-a[r-1]);这个数字第几个
-         int goal=x-sum[l-1]-a[r-1];
-        // cout<<goal<<" "<<r<<endl;
+         LL goal=x-cal1(l-1)-cal2(r-1);
          vector<int> ans;
          while(r){
            ans.pb(r%10);
            r/=10;
          }
          reverse(ans.begin(),ans.end());
-         rep(i,0,ans.size()) if(i+1==goal) printf("%d\n",ans[i]);
+         rep(i,0,ans.size()) if((i+1)*1LL==goal) printf("%d\n",ans[i]);
     }
 return 0;
 }

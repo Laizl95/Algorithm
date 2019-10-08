@@ -11,8 +11,8 @@ int b_search(int num,int l,int r){
 
     while(l<=r){
         int mid=l+r>>1;
-        if(num<dp[mid]) r-=1;
-        else l+=1;
+        if(num<dp[mid]) r=mid-1;
+        else l=mid+1;
     }
     return l;
 }
