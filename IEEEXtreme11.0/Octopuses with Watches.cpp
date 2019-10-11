@@ -8,35 +8,35 @@ const int N=15,mod=1e9+7;
 typedef long long LL;
 int mat[N][N];
 int n,m;
-int solve(int x,int y,int sum){
-    int t=sum-mat[x][y];
-    if(t<0) return 0;
-    int a[N][N];
-    rep(i,0,n) rep(j,0,m) a[i][j]=mat[i][j];
-    int ans=0;
-    rep(i,0,t+1){
-        rep(r,0,m) a[x][r]+=i;
-        rep(c,0,n) a[c][y]+=t-i;
-        int tot=0;
-        rep(i,0,n) rep(j,0,m)
-            if(a[i][j]==3 || a[i][j]==6 || a[i][j]==9 || a[i][j]==12)
-                tot+=1;
-                cout<<tot<<endl;
-        ans=max(ans,tot);
+int cnt=0;
+void solve(int x){
+    if(x==n){
+            cout<<x<<endl;
+        int ans=0,tot[3];
+        rep(j,0,m) {
+            ms(tot,0);
+            rep(i,0,n) tot[mat[i][j]]+=1;
+            ans+=max(max(tot[0],tot[1]),tot[2]);
+        }
+        cnt=max(cnt,ans);
+        return;
     }
-    return ans;
+    rep(k,0,3){
+        int a[15];
+        rep(j,0,m) a[j]=mat[x][j],mat[x][j]=(mat[x][j]+k)%3;
+        solve(x+1);
+        rep(j,0,m) mat[x][j]=a[j];
+    }
 }
 int main(){
     while(scanf("%d %d",&n,&m)!=EOF){
         int ans=0;
         rep(i,0,n) rep(j,0,m){
-            scanf("%d",&mat[i][j]);
-            if(mat[i][j]==3 || mat[i][j]==6 || mat[i][j]==9 || mat[i][j]==12)
-                ans+=1;
+        scanf("%d",&mat[i][j]);
+           mat[i][j]%=3;
         }
-        rep(i,0,n) rep(j,0,m) rep(k,1,5)
-            ans=solve(i,j,3*k);
-        printf("%d\n",ans);
+        solve(0);
+        printf("%d\n",cnt);
     }
 return 0;
 }
