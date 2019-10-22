@@ -16,3 +16,16 @@
 
 1567323197 c:\users\zhilong\desktop\code\c++\ticketmachine\include\a_.h
 
+1567499193 source:c:\users\lai\desktop\code\algorithm\c++\ticketmachine\main.cpp
+	<iostream>
+	<TicketMachine.h>
+	<A_.h>
+
+1567499193 c:\users\lai\desktop\code\algorithm\c++\ticketmachine\include\ticketmachine.h
+
+1567499193 c:\users\lai\desktop\code\algorithm\c++\ticketmachine\include\a_.h
+
+1567499193 source:c:\users\lai\desktop\code\algorithm\c++\ticketmachine\src\ticketmachine.cpp
+	"TicketMachine.h"
+	<iostream>
+
