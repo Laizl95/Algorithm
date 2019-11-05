@@ -31,5 +31,5 @@ int main(){
            }
            cout<<dp[n+1]<<endl;
         }
-return 0;
+return 0;08
 }
