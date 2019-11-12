@@ -4,26 +4,22 @@
 #define ms(x,y) memset(x,y,sizeof(x))
 #define pb(x) push_back(x)
 using namespace std;
-const int N=105,inf=1e9+5;
+const int N=2e5+5,inf=1e9+5;
 typedef long long LL;
-int a[N],vis[N];
-
+//15:28
+int a[N];
 int main(){
-    int n,t;
+    int t,n;
     scanf("%d",&t);
     while(t--){
         scanf("%d",&n);
         rep(i,0,n) scanf("%d",&a[i]);
-        ms(vis,0);
-        while(1){
-            int ok=0;
-            per(i,0,n){
-             if(i>0 && a[i]<a[i-1] && !vis[i]) ok=1,vis[i]=1,swap(a[i],a[i-1]);
-            }
-            if(!ok) break;
+        sort(a,a+n);
+        int ans=0;
+        per(i,0,n){
+            if(a[i]>=n-i) ans=n-i;
         }
-        rep(i,0,n) printf("%d ",a[i]);puts("");
-
+        cout<<ans<<endl;
     }
 return 0;
 }

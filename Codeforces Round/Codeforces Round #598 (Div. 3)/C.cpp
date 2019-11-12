@@ -6,32 +6,43 @@
 using namespace std;
 const int N=1005,inf=1e9+5;
 typedef long long LL;
-int a[N],dp[N];
+int a[N],p[N];
 int main(){
     int n,m,d;
     while(scanf("%d %d %d",&n,&m,&d)!=EOF){
-        rep(i,0,m) scanf("%d",&a[i]);
-        ms(dp,0);
-        int k=0;
-        rep(i,0,m){
-            dp[k+d]=i+1;
-            rep(j,0,a[i]){
-                dp[k+d+j]=i+1;
+            int sum=0;
+        rep(i,0,m) scanf("%d",&a[i]),sum+=a[i];
+        ms(p,0);
+        if(n+1-sum<=d){
+                int k=0;
+            rep(i,0,m){
+                rep(j,1,a[i]+1) p[k+j]=i+1;
+                k+=a[i];
             }
-            k=k+d+a[i]-1;
-        }
-        //1cout<<k<<endl;
-        if(k+d>=n+1){
-            printf("YES\n");
-            int maxx=0,pos;
-            rep(i,1,n+1) if(dp[i]>maxx) maxx=dp[i],pos=i;
-            while(maxx<=m){
-                dp[pos+d]=maxx;
+            puts("YES");
+            rep(i,1,n+1) printf("%d ",p[i]); puts("");
+        }else{
+            int need=n+1-sum-d;
+            int x=need/m,y=need%m;
+            //cout<<x<<" "<<y<<endl;
+            if(x>d-1 || (x==d-1 && y!=0) ) puts("NO");
+            else{
 
-                maxx+=1;
+                int k=1;
+                rep(i,0,m){
+                    int step;
+                    if(m-i<=y) step=x+1;
+                    else step=x;
+                    p[k+step]=i+1;
+                    rep(j,0,a[i]){
+                        p[k+step+j]=i+1;
+                    }
+                    k+=step+a[i];
+                }
+                    puts("YES");
+                    rep(i,1,n+1) printf("%d ",p[i]); puts("");
+
             }
-            rep(i,1,n+1) printf("%d ",dp[i]);
-            puts("");
-        }else printf("NO\n");
+        }
     }
 }
