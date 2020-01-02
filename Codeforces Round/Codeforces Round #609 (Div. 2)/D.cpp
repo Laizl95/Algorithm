@@ -6,18 +6,16 @@
 using namespace std;
 const int N=3e5+5,inf=1e9+5;
 typedef long long LL;
-int a[N];
+LL a[2];
 int main(){
-    int n;
+    int n,x;
     scanf("%d",&n);
-    rep(i,0,n) scanf("%d",&a[i]);
-    LL ans=0;
-    int pre=0;
     rep(i,0,n){
-        ans+=a[i]/2;
-        if((a[i]&1) && pre) ans+=1,pre=0;
-        else pre=(a[i]&1);
+        scanf("%d",&x);
+        a[0]+=x/2;
+        a[1]+=x/2;
+        a[i&1]+=(x&1);
     }
-    cout<<ans<<endl;
+    cout<<min(a[0],a[1])<<endl;
 return 0;
 }

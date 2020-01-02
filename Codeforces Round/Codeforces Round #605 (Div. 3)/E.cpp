@@ -6,38 +6,49 @@
 using namespace std;
 const int N=2e5+5,inf=1e9+5;
 typedef long long LL;
-//17:20
-int a[N],vis[N],ans[N],n;
-int dfs(int u,int pre){
-    if(u<1 || u>n) return -1;
-
-    cout<<u<<" "<<pre<<endl;
-    vis[u]+=1;
-    if((a[u]+a[pre])&1){
-        //ans[u]=1;
-        ans[pre]=1;
-        return 1;
-    }
-    if(vis[u]) return ans[u];
-    if(vis[u]>=2) return -1;
-    int l_n=dfs(u+a[u],u);
-    int r_n=dfs(u-a[u],u);
-    if(ans[u]==-1){
-        if(l_n==-1) ans[u]=r_n;
-        if(r_n==-1) ans[u]=l_n;
-        if(l_n!=-1 && r_n!=-1) ans[u]=min(l_n,r_n);
-    }else{
-        if(l_n!=-1) ans[u]=min(ans[u],l_n);
-        if(r_n!=-1) ans[u]=min(ans[u],r_n);
-    }
-    if(ans[u]==-1) return -1;
-    return ++ans[u];
+//反向建图 dfs会返回祖先节点但该点没有更新
+int ans[N],d[N],n;
+vector<int> edge[N],odd,even;
+struct node{
+    int d,v;
+    node(){}
+    node(int _d,int _v){d=_d;v=_v;}
+};
+void bfs(const vector<int> &v1,const vector<int> &v2){
+     queue<node> q;
+     rep(i,1,n+1) d[i]=inf;
+     rep(i,0,v1.size()){
+        q.push(node(0,v1[i]));
+        d[v1[i]]=0;
+     }
+     while(!q.empty()){
+        node now=q.front();
+        q.pop();
+        rep(i,0,edge[now.v].size()){
+            int v=edge[now.v][i];
+            if(d[v]!=inf) continue;
+            d[v]=now.d+1;
+            q.push(node(now.d+1,v));
+        }
+     }
+     rep(i,0,v2.size()){
+        if(d[v2[i]]!=inf) ans[v2[i]]=d[v2[i]];
+     }
 }
 int main(){
-
+    int x;
     scanf("%d",&n);
-    rep(i,0,n) scanf("%d",&a[i+1]);
-    rep(i,1,n+1) if(!vis[i]) dfs(i,-1);
-    rep(i,1,n+1) printf("%d ",ans[i]);puts("");
+    rep(i,1,n+1){
+        scanf("%d",&x);
+        ans[i]=inf;
+        if(x&1) odd.pb(i);
+        else even.pb(i);
+        if(x+i<=n) edge[x+i].pb(i);
+        if(i-x>0) edge[i-x].pb(i);
+    }
+    bfs(even,odd);
+    bfs(odd,even);
+    rep(i,1,n+1) printf("%d ",ans[i]==inf?-1:ans[i]);
+    puts("");
 return 0;
 }
