@@ -17,7 +17,7 @@ void exgcd(LL a, LL b, LL &x, LL &y) {
   y -= a / b * x;
 }
 int main(){
-    cout<<(-19%4)<<endl;
+    //cout<<(-19%4)<<endl;
     int n,m,k;
     scanf("%d",&n);
     rep(i,0,n){
