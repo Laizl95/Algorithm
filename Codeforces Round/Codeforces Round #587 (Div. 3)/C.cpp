@@ -1,45 +1,42 @@
 #include<bits/stdc++.h>
+#define rep(i,x,y) for(int i=x;i<y;++i)
+#define per(i,x,y) for(int i=y-1;i>=x;--i)
+#define ms(x,y) memset(x,y,sizeof(x))
+#define pb(x) push_back(x)
 using namespace std;
-const int maxn = 2e5 + 15;
-typedef long long ll;
-struct node {
-    int x, y;
-} p[7];
-int ranks[maxn], d;
-bool vis[105][105];
-int get_pos(int x) {
-    //从数组的begin位置到end-1位置二分查找第一个
-    //大于或等于num的数字，找到返回该数字的地址
-    return lower_bound(ranks + 1, ranks + 1 + d, x) - ranks;
-}
-int main() {
-    for(int i = 1; i <= 6; i++) {
-        cin >> p[i].x >> p[i].y;
-        ranks[++d] = p[i].x;
-        ranks[++d] = p[i].y;
+const int N=2*1e5+5;
+typedef long long LL;
+int x[6],y[6];
+map<int,int> X,Y;
+int vis[50][50];
+int main(){
+    int n;
+    while(scanf("%d %d %d %d",&x[0],&y[0],&x[1],&y[1])!=EOF){
+            ms(vis,0);
+            X.clear();Y.clear();
+       rep(i,2,6) scanf("%d %d",&x[i],&y[i]);
+       int a[6],b[6];
+       rep(i,0,6) a[i]=x[i],b[i]=y[i];
+       sort(a,a+6);sort(b,b+6);
+       int tot1=1,tot2=1;
+       rep(i,0,6){
+        if(X.count(a[i])==0) X[a[i]]=tot1++;
+        if(Y.count(b[i])==0) Y[b[i]]=tot2++;
+       }
+        rep(i,X[x[2]],X[x[3]]){
+            rep(j,Y[y[2]],Y[y[3]])
+              vis[i][j]=1;
+        }
+        rep(i,X[x[4]],X[x[5]]){
+            rep(j,Y[y[4]],Y[y[5]])
+              vis[i][j]=1;
+        }
+        int ok=0;
+        rep(i,X[x[0]],X[x[1]]){
+            rep(j,Y[y[0]],Y[y[1]])
+              if(vis[i][j]==0) ok=1;
+        }
+        puts(ok?"YES":"NO");
     }
-    sort(ranks + 1, ranks + 1 + d);
-    d = unique(ranks + 1, ranks + 1 + d) - (ranks + 1);
-    for(int i = 1; i <= 6; i++) {
-        p[i].x = get_pos(p[i].x);
-        p[i].y = get_pos(p[i].y);
-    }
-    for(int i = p[3].x; i < p[4].x; i++) {
-        for(int j = p[3].y; j < p[4].y; j++)
-            vis[i][j] = 1;
-    }
-    for(int i = p[5].x; i < p[6].x; i++) {
-        for(int j = p[5].y; j < p[6].y; j++)
-            vis[i][j] = 1;
-    }
-    int cnt = 0;
-    for(int i = p[1].x; i < p[2].x; i++) {
-        for(int j = p[1].y; j < p[2].y; j++)
-            if(vis[i][j] == 0) {
-                cout << "YES" << endl;
-                return 0;
-            }
-    }
-    cout << "NO" << endl;
-    return 0;
+return 0;
 }

@@ -6,42 +6,16 @@
 using namespace std;
 const int N=2*1e5+5;
 typedef long long LL;
-int x[6],y[6];
-map<int,int> X,Y;
-int vis[50][50];
+char s[N];
 int main(){
     int n;
-    while(scanf("%d %d %d %d",&x[0],&y[0],&x[1],&y[1])!=EOF){
-            ms(vis,0);
-            X.clear();Y.clear();
-       rep(i,2,6) scanf("%d %d",&x[i],&y[i]);
-       int a[6],b[6];
-       rep(i,0,6) a[i]=x[i],b[i]=y[i];
-       sort(a,a+6);sort(b,b+6);
-       int tot1=1,tot2=1;
-       rep(i,0,6){
-        if(X.count(a[i])==0) X[a[i]]=tot1++;
-        if(Y.count(b[i])==0) Y[b[i]]=tot2++;
-       }
-
-        rep(i,X[x[2]],X[x[3]]+1){
-            rep(j,Y[y[2]],Y[y[3]]+1)
-              vis[i][j]=1;
-        }
-        rep(i,X[x[4]],X[x[5]]+1){
-            rep(j,Y[y[4]],Y[y[5]]+1)
-              vis[i][j]=1;
-        }
-        rep(i,1,tot1) {rep(j,1,tot2) printf("%d",vis[i][j]); puts("");}
-        int ok=0;
-        rep(i,X[x[0]],X[x[1]]+1){
-            rep(j,Y[y[0]],Y[y[1]]+1){
-                printf("%d %d %d\n",i,j,vis[i][j]);
-              if(vis[i][j]==0) ok=1;
-              }
-        }
-        puts(ok?"YES":"NO");
-
+    while(scanf("%d",&n)!=EOF){
+        scanf("%s",s);
+        int ans=0;
+        for(int i=0;i<n;i+=2)
+        if(s[i]==s[i+1]){ans+=1;if(s[i]=='a') s[i]='b';else s[i]='a';}
+        printf("%d\n",ans);
+        rep(i,0,n) printf("%c",s[i]);puts("");
     }
 return 0;
 }
