@@ -28,51 +28,13 @@ int main(){
     //rep(i,0,10) cout<<v[i].first<<" "<<v[i].second<<endl;
     int ans=0;
     rep(i,0,v.size()){
-        LL sum=t,dis=cal_dis(v[i],mp(xs,ys));
-        int cnt=0;
-        if(sum>=dis){
-            sum-=dis;LL buf=sum;
-            ans=max(ans,1);
-            rep(j,0,i){
-                dis=cal_dis(v[i],v[j]);
-                cnt=1;
-                if(sum>=dis){
-                    LL d=sum-dis;
-                    cnt+=i-j;
-                    ans=max(ans,cnt);
-                    rep(k,i+1,v.size()){
-                        dis=cal_dis(v[k],v[j]);
-                        if(d>=dis){
-                            ans=max(ans,cnt+k-i);
-                        }else break;
-                    }
-                }
-            }
-                rep(k,i+1,v.size()){
-                        dis=cal_dis(v[k],v[i]);
-                        if(sum>=dis){
-                            ans=max(ans,cnt+k-i);
-                        }else break;
-                }
-                //cout<<ans<<endl;
-            sum=buf;
-            rep(j,i+1,v.size()){
-                dis=cal_dis(v[i],v[j]);
-                cnt=1;
-                if(sum>=dis){
-                    LL d=sum-dis;
-                    cnt+=j-i;
-                    ans=max(ans,cnt);
-                    per(k,0,i){
-                        dis=cal_dis(v[k],v[j]);
-                        if(d>=dis){
-                            ans=max(ans,cnt+i-k);
-                        }else break;
-                    }
-                }
-            }
-        }
+       rep(j,i,v.size()){
+            LL dis=cal_dis(v[i],v[j]),dis_l=cal_dis(mp(xs,ys),v[i]),
+            dis_r=cal_dis(mp(xs,ys),v[j]);
+            if(dis_l+dis<=t || dis_r+dis<=t)
+                ans=max(ans,j-i+1);
+       }
     }
-    cout<<ans<<endl;
+    printf("%d\n",ans);
 return 0;
 }
