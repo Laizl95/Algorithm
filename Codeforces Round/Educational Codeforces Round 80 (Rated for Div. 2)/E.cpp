@@ -1,102 +1,50 @@
-#include <bits/stdc++.h>
-
-#define forn(i, n) for (int i = 0; i < int(n); i++)
-#define x first
-#define y second
-
+#include<bits/stdc++.h>
+#define rep(i,x,y) for(int i=x;i<y;++i)
+#define per(i,x,y) for(int i=y-1;i>=x;--i)
+#define ms(x,y) memset(x,y,sizeof(x))
+#define pb(x) push_back(x)
+#define mp(x,y) make_pair(x,y)
 using namespace std;
-
-const int N = 300 * 1000 + 13;
-const int P = 550;
-
-typedef pair<int, int> pt;
-
-int n;
-int a[N];
-vector<int> pos[N];
-pt ans[N];
-
-int cnt[N];
-int tot;
-
-void add(int x){
-	++cnt[x];
-	if (cnt[x] == 1) ++tot;
+const int N=3e5+5,inf=1e9+5;
+typedef long long LL;
+int sum[2*N],a[N],mx_l[N],mx_r[N],pos[N];
+int n,m;
+int lowbit(int x){
+    return x&(-x);
 }
-
-void rem(int x){
-	if (cnt[x] == 1) --tot;
-	--cnt[x];
+void update(int i,int k){
+    while(i<=n+m){
+        sum[i]+=k;
+        i+=lowbit(i);
+    }
 }
-
-int f[N];
-
-void upd(int x){
-	for (int i = x; i >= 0; i = (i & (i + 1)) - 1)
-		++f[i];
+int query(int i){
+    int res=0;
+    while(i>0){
+        res+=sum[i];
+        i-=lowbit(i);
+    }
+    return res;
 }
+int main(){
+    scanf("%d %d",&n,&m);
+    rep(i,1,n+1) mx_l[i]=i,mx_r[i]=i,pos[i]=n-i+1;
+    rep(i,1,n+1) update(i,1);
+    rep(i,0,m){
+        scanf("%d",&a[i]);
+        mx_l[a[i]]=1;
 
-int get(int x){
-	int res = 0;
-	for (int i = x; i < N; i |= i + 1)
-		res += f[i];
-	return res;
-}
+    }
+    rep(i,0,m){
+        mx_r[a[i]]=max(mx_r[a[i]],n-query(pos[a[i]]-1));
+        update(pos[a[i]],-1);
+        pos[a[i]]=n+i+1;
+        update(pos[a[i]],1);
+    }
+    rep(i,1,n+1){
+        mx_r[i]=max(mx_r[i],n-query(pos[i]-1));
+        printf("%d %d\n",mx_l[i],mx_r[i]);
+    }
 
-int main() {
-	int n, m;
-	scanf("%d%d", &n, &m);
-	forn(i, m){
-		scanf("%d", &a[i]);
-		--a[i];
-	}
-	forn(i, m){
-		pos[a[i]].push_back(i);
-	}
-
-	vector<pt> qr;
-	forn(i, n){
-		for (int j = 1; j < int(pos[i].size()); ++j)
-			qr.push_back(make_pair(pos[i][j - 1] + 1, pos[i][j] - 1));
-		if (!pos[i].empty())
-			qr.push_back(make_pair(pos[i].back() + 1, m - 1));
-	}
-
-	sort(qr.begin(), qr.end()); [](const pt &a, const pt &b){
-		if (a.x / P != b.x / P)
-			return a.x < b.x;
-		if ((a.x / P) & 1)
-			return a.y < b.y;
-		return a.y > b.y;
-	});
-
-	forn(i, n) ans[i].first=i,ans[i].second=i;
-	forn(i, m) ans[a[i]].x = 0;
-
-	int L = 0, R = -1;
-	forn(i, qr.size()){
-		int l = qr[i].x;
-		int r = qr[i].y;
-		if (r < l) continue;
-
-		int x = a[qr[i].x - 1];
-		while (L < l) rem(a[L++]);
-		while (L > l) add(a[--L]);
-		while (R > r) rem(a[R--]);
-		while (R < r) add(a[++R]);
-		//cout<<x<<" "<<tot<<endl;
-		ans[x].y = max(ans[x].y, tot);
-	}
-	forn(i, m){
-		if (i == pos[a[i]][0]){
-			ans[a[i]].y = max(ans[a[i]].y, a[i] + get(a[i]));
-			upd(a[i]);
-		}
-	}
-	forn(i, n) if (pos[i].empty()){
-		ans[i].y = max(ans[i].y, i + get(i));
-	}
-
-	forn(i, n) printf("%d %d\n", ans[i].x + 1, ans[i].y + 1);
-	return 0;
+return 0;
 }
