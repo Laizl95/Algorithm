@@ -8,6 +8,7 @@
 #define ls i<<1
 #define rs i<<1|1
 #define mp(x,y) make_pair(x,y)
+#define pii pair<int,int>
 using namespace std;
 const int N=2e5+5,inf=1e9+5;
 typedef long long LL;
