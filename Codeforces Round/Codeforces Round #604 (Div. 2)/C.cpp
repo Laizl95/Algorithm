@@ -4,53 +4,45 @@
 #define ms(x,y) memset(x,y,sizeof(x))
 #define pb(x) push_back(x)
 using namespace std;
-const int N=4e5+5,inf=1e9+5;
+const int N=4e5+5,inf=1e9+5,M=1e6+5;
 typedef long long LL;
 
-int a[N],sum[N];
+int a[N],sum[N],vis[M];
 int main(){
     int t,n;
     scanf("%d",&t);
     while(t--){
         scanf("%d",&n);
-        rep(i,0,n)  scanf("%d",&a[i]);
-        int id=-1,ans=-1,a1,a2,a3;
-        rep(i,0,n)
-            if(i>0 && a[i]==a[i-1]) sum[id]+=1;
-            else sum[++id]=1;
-        id+=1;
-        rep(i,1,id) sum[i]+=sum[i-1];
-        //rep(i,0,id) printf("%d ",sum[i]);puts("");
-        rep(i,0,id){
-            int g=sum[i],s=-1,b=-1;
-            int l=i+1,r=id-2;
+        int x,cnt=0;
+        rep(i,1,n+1) sum[i]=0;
+        rep(i,0,n){
+            scanf("%d",&x);
+            a[i]=x;
+            if(!vis[x]) vis[x]=++cnt;
+            sum[vis[x]]+=1;
+        }
+        //rep(i,1,cnt+1) printf("%d ",sum[i]);puts("");
+        rep(i,1,cnt+1){
+            sum[i]+=sum[i-1];
+            if(sum[i]>n/2) {cnt=i-1;break;}
+        }
+        int g=0,s=0,b=0;
+        rep(i,1,cnt+1){
+            int l=i+1,r=cnt,num=sum[i];
+            if(sum[i]*3>=n/2) break;
             while(l<=r){
                 int mid=l+r>>1;
-                if(sum[mid]-sum[i]>g) r=mid-1;
-                else l=mid+1;
+                if(sum[mid]<=2*sum[i]) l=mid+1;
+                else r=mid-1;
             }
-            if(l>id-2) continue;
-            s=sum[l]-sum[i];
-            b=n/2-g-s;
-            if(b<=0) continue;
-            int p=l;
-            l+=1;r=id-1;
-            while(l<=r){
-                int mid=l+r>>1;
-                if(sum[mid]-sum[p]>b) r=mid-1;
-                else l=mid+1;
-            }
-            if(l==p+1) continue;
-            l-=1;
-            b=sum[l]-sum[p];
-            if(b<=g) continue;
-            if(g+s+b>ans){
-                ans=g+s+b;
-                a1=g;a2=s;a3=b;
+            int x1=sum[i],x2=sum[l]-x1,x3=sum[cnt]-sum[l];
+            if(l>=cnt || x3==0 || x1>=x2 || x1>=x3) continue;
+            if(x1+x2+x3>g+s+b){
+                g=x1;s=x2;b=x3;
             }
         }
-        if(ans==-1) printf("0 0 0\n");
-        else printf("%d %d %d\n",a1,a2,a3);
+         printf("%d %d %d\n",g,s,b);
+         rep(i,0,n) vis[a[i]]=0;
     }
 return 0;
 }

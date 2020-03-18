@@ -4,39 +4,45 @@
 #define ms(x,y) memset(x,y,sizeof(x))
 #define pb(x) push_back(x)
 using namespace std;
-const int N=2e3+5,inf=1e9+5;
+const int N=5e3+5,inf=1e9+5;
 typedef long long LL;
-struct node{
-    int need,add,v;
-}a[N];
-vector<int> edge;
+int a[N],b[N],c[N],d[N];
+int dp[N][N];//到达第i个城市当前有j个士兵时的最大值
+vector<int> edge[N];
+bool cmp(const int &u,const int &v){
+    return c[u]>c[v];
+}
 int main(){
-   int n,m,k;
+    int n,m,k;
     scanf("%d %d %d",&n,&m,&k);
-    rep(i,0,n){
-        scanf("%d %d %d",&a[i].need,&a[i].add,&a[i].v);
-    }
-    b[n]=a[i].need;
-    per(i,0,n) b[i]=max(b[i+1]-a[i].add,a[i].need);
+    rep(i,1,n+1) scanf("%d %d %d",&a[i],&b[i],&c[i]);
+    int u,v;
+    rep(i,1,n+1) d[i]=i;
     rep(i,0,m){
         scanf("%d %d",&u,&v);
-        if(u<v) swap(u,v);
-        edge[u].pb(v);
-        ll[u].pb(a[v-1].v);
+        d[v]=max(d[v],u);
     }
-    rep(i,0,n) sort(ll[u].begin(),ll[u].end());
-    int ans=0;
-    rep(i,0,n){
-        if(k>=a[i].need){
-            k+=a[i].add;
-
-            if(k>=b[i]){
-                int t=min(k-b[i],ll[i].size());
-                rep(i,0,t){
-
-                }
+    rep(i,1,n+1){
+        edge[d[i]].pb(i);
+    }
+    rep(i,1,n+1) sort(edge[i].begin(),edge[i].end(),cmp);
+    ms(dp,-1);
+    dp[0][k]=0;
+    rep(i,1,n+1){
+        rep(j,a[i],5001){
+            if(dp[i-1][j]==-1) continue;
+            dp[i][j+b[i]]=dp[i-1][j];
+        }
+        for(auto v:edge[i]){
+            rep(j,1,5001){
+                if(dp[i][j]==-1) continue;
+                dp[i][j-1]=max(dp[i][j-1],dp[i][j]+c[v]);
             }
         }
     }
+    int mx=-1;
+    rep(i,0,5001) mx=max(mx,dp[n][i]);
+    printf("%d\n",mx);
+
 return 0;
 }

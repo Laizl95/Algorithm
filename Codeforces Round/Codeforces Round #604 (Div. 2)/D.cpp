@@ -9,29 +9,24 @@ typedef long long LL;
 int a[4];
 int main(){
     scanf("%d %d %d %d",&a[0],&a[1],&a[2],&a[3]);
-    int toal=a[0]+a[1]+a[2]+a[3],ok=0;
-
-    rep(i,0,4){
-
-        int st=i;
-        int b[4]={a[0],a[1],a[2],a[3]}; vector<int> ans;
-          //rep(i,0,4) printf("%d ",b[i]);
-        while(a[st]>0){
-            a[st]-=1;
-            ans.pb(st);
-            if(st-1>=0 && a[st-1]>0){
-                st=st-1;
-            }else if(st+1<=3 && a[st+1]>0){
-                st=st+1;
-            }else break;
+    if(a[0]-a[1]>=2 || (a[0]-a[1]==1 && (a[2] || a[3]))) {puts("NO");return 0;}
+    if(a[3]-a[2]>=2 || (a[3]-a[2]==1 && (a[0] || a[1]))){puts("NO");return 0;}
+    if(a[1]>=a[0] && a[2]>=a[3]){
+        a[1]-=a[0];a[2]-=a[3];
+        int x=max(a[1],a[2]);
+        if(x-a[1]>=2 || x-a[2]>=2 ){puts("NO");return 0;}
+        puts("YES");
+        if(x-a[2]) printf("1 ");
+        rep(i,0,a[0]) printf("0 1 ");
+        rep(i,0,min(a[1],a[2])) printf("2 1 ");
+        rep(i,0,a[3]) printf("2 3 ");
+        if(x-a[1]) printf("2"); puts("");
+    }else{
+        if(a[0]-a[1]==1){puts("YES");
+            rep(i,0,a[1]) printf("0 1 ");printf("0\n");
+        }else{puts("YES");
+            printf("3 ");rep(i,0,a[2]) printf("2 3 ");puts("");
         }
-        rep(i,0,4) a[i]=b[i];
-         if(ans.size()==toal) {
-                ok=1;puts("YES");
-         rep(i,0,ans.size()) printf("%d ",ans[i]);puts("");
-            break;
-         }
     }
-    if(!ok) puts("NO");
 return 0;
 }

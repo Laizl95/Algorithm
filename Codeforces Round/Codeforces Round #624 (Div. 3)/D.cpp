@@ -19,18 +19,19 @@ int main(){
         scanf("%d %d %d",&a,&b,&c);
         int x=0;
         int ans=-1,t1,t2,t3;
-          for(int i=1;i<=10000;i++)
-            for(int j=i;j<=10000+i;j+=i)
-                for(int k=j;k<=10000+j;k+=j){
-                        //++x;
-                    int cnt=abs(a-i)+abs(b-j)+abs(c-k);
-                    if(ans==-1 || cnt<ans){
-                        ans=cnt;
-                        t1=i;
-                        t2=j;
-                        t3=k;
+        //2a+k不如从1开始 2b+k不如从i开始
+        for(int i=1;i<2*a;++i){
+            for(int j=i;j<2*b;j+=i){
+                rep(k,0,2){
+                    int now_c=j*(c/j)+k*j;
+                    int num=abs(i-a)+abs(j-b)+abs(now_c-c);
+                    if(num<ans || ans==-1){
+                            ans=num;
+                        t1=i;t2=j;t3=now_c;
                     }
                 }
+            }
+        }
         printf("%d\n%d %d %d\n",ans,t1,t2,t3);
     }
 return 0;
