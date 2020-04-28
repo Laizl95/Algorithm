@@ -23,9 +23,8 @@ LL get(LL p){
     LL x=p;
     while(p<=m){
         ans=ans*Pow(x,m/p)%mod;
-        if(m/x<p) break;
+        if(m/p<x) break;
         p=p*x;
-        //cout<<p<<endl;
     }
 }
 int main(){
@@ -34,7 +33,7 @@ int main(){
             ans=1;
           for(int i=2;i*i<=n;i+=1){
                 if(n%i==0){
-                    get(i);
+                    get(i*1LL);
                     while(n%i==0) n/=i;
                 }
           }
