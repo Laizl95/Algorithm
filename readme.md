@@ -1,2 +1,2 @@
-# 记录自己的刷题过程
+# 刷题记录
 [] (https://github.com/Laizl95/Algorithm)
