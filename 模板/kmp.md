@@ -64,3 +64,14 @@ int kmpCnt(string s,string t){
 }
 
 ```
+### Z函数
+```
+void zFunction(int len) {
+    int l=0,r=0;
+    for(int i=1;i<len;++i){
+        if(i<=r) z[i]=min(r-i+1,z[i-l]);
+        while(i+z[i]<len && s[z[i]]==s[i+z[i]] ) ++z[i];
+        if(i+z[i]-1>r) l=i,r=i+z[i]-1;
+    }
+}
+```
