@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "type_traits": "cpp"
+    },
+    "editor.fontSize": 16,
+    "terminal.integrated.fontSize": 18
+}
